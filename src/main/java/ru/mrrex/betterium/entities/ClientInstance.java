@@ -17,6 +17,8 @@ public class ClientInstance implements UniqueEntity {
     @JsonIgnore
     private String uniqueId;
 
+    private JarComponent[] components;
+
     public String getName() {
         return name;
     }
@@ -31,6 +33,14 @@ public class ClientInstance implements UniqueEntity {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public void setComponents(JarComponent[] components) {
+        this.components = components;
+    }
+
+    public JarComponent[] getComponents() {
+        return components;
     }
 
     @Override
