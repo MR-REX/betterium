@@ -16,4 +16,9 @@ public class Betterium {
         Path workingDirectoryPath = Environment.getApplicationDirectoryPath().resolve(".betterium");
         workingDirectory = new WorkingDirectory(workingDirectoryPath);
     }
+
+    @Override
+    public String toString() {
+        return "Betterium [path=\"%s\"]".formatted(workingDirectory.getPath());
+    }
 }
