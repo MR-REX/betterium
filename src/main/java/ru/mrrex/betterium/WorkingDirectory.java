@@ -3,6 +3,11 @@ package ru.mrrex.betterium;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.NoSuchAlgorithmException;
+
+import ru.mrrex.betterium.entities.MavenArtifact;
+import ru.mrrex.betterium.utils.hash.Hash;
+import ru.mrrex.betterium.utils.hash.HashAlgorithm;
 
 public class WorkingDirectory {
 
@@ -47,6 +52,34 @@ public class WorkingDirectory {
 
     public Path getPath() {
         return path;
+    }
+
+    public Path getDependenciesDirectoryPath() {
+        return dependenciesDirectoryPath;
+    }
+
+    public Path getMavenArtifactPath(MavenArtifact mavenArtifact) {
+        Path mavenArtifactPath = dependenciesDirectoryPath.resolve(mavenArtifact.getRelativePath());
+
+        if (!Files.exists(mavenArtifactPath) || !Files.isRegularFile(mavenArtifactPath)) {
+            return null;
+        }
+
+        return mavenArtifactPath;
+    }
+
+    public boolean hasMavenArtifact(MavenArtifact mavenArtifact) {
+        Path mavenArtifactPath = getMavenArtifactPath(mavenArtifact);
+
+        if (mavenArtifactPath == null) {
+            return false;
+        }
+
+        try {
+            return Hash.isChecksumValid(mavenArtifactPath, HashAlgorithm.SHA256, mavenArtifact.getChecksum());
+        } catch (IOException | NoSuchAlgorithmException exception) {
+            return false;
+        }
     }
 
     @Override
