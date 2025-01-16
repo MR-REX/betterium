@@ -1,4 +1,4 @@
-package ru.mrrex.betterium.entities;
+package ru.mrrex.betterium.entities.interfaces;
 
 import java.net.URL;
 

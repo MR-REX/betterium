@@ -5,6 +5,8 @@ import java.net.URL;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
+
 public class MavenArtifact implements DownloadableEntity {
 
     @JsonProperty("group_id")
