@@ -18,6 +18,7 @@ public class ClientInstance implements UniqueEntity {
     private String uniqueId;
 
     private JarComponent[] components;
+    private MavenArtifact[] dependencies;
 
     public String getName() {
         return name;
@@ -41,6 +42,14 @@ public class ClientInstance implements UniqueEntity {
 
     public JarComponent[] getComponents() {
         return components;
+    }
+
+    public MavenArtifact[] getDependencies() {
+        return dependencies;
+    }
+
+    public void setDependencies(MavenArtifact[] dependencies) {
+        this.dependencies = dependencies;
     }
 
     @Override
