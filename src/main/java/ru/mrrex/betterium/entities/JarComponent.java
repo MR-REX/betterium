@@ -2,16 +2,12 @@ package ru.mrrex.betterium.entities;
 
 import java.net.URL;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
 
 public class JarComponent implements DownloadableEntity {
 
     private URL url;
-
-    @JsonProperty("sha256")
-    private String hash;
+    private String checksum;
 
     public URL getUrl() {
         return url;
@@ -21,12 +17,12 @@ public class JarComponent implements DownloadableEntity {
         this.url = url;
     }
 
-    public String getHash() {
-        return hash;
+    public String getChecksum() {
+        return checksum;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public void setChecksum(String checksum) {
+        this.checksum = checksum;
     }
 
     @Override
