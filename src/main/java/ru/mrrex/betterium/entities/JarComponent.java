@@ -4,7 +4,7 @@ import java.net.URL;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class JarComponent {
+public class JarComponent implements DownloadableEntity {
 
     private URL url;
 
@@ -29,6 +29,6 @@ public class JarComponent {
 
     @Override
     public String toString() {
-        return "ClientComponent [url=\"%s\"]".formatted(url);
+        return "JarComponent [url=\"%s\"]".formatted(url);
     }
 }
