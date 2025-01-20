@@ -2,14 +2,15 @@ package ru.mrrex.betterium.entities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
-import ru.mrrex.betterium.entities.interfaces.StorableEntity;
+import ru.mrrex.betterium.utils.environment.OperatingSystem;
+import ru.mrrex.betterium.utils.environment.ProcessorArchitecture;
 
-public class MavenArtifact implements DownloadableEntity, StorableEntity {
+public class MavenArtifact implements DownloadableEntity {
 
     @JsonProperty("group_id")
     private String groupId;
@@ -19,6 +20,8 @@ public class MavenArtifact implements DownloadableEntity, StorableEntity {
 
     private String version;
     private String checksum;
+
+    private Map<OperatingSystem, Map<ProcessorArchitecture, RemoteFile[]>> natives;
 
     public String getGroupId() {
         return groupId;
@@ -52,7 +55,28 @@ public class MavenArtifact implements DownloadableEntity, StorableEntity {
         this.checksum = checksum;
     }
 
-    @Override
+    public Map<OperatingSystem, Map<ProcessorArchitecture, RemoteFile[]>> getNatives() {
+        return natives;
+    }
+
+    public void setNatives(Map<OperatingSystem, Map<ProcessorArchitecture, RemoteFile[]>> natives) {
+        this.natives = natives;
+    }
+
+    public RemoteFile[] getNativeFiles(OperatingSystem operatingSystem, ProcessorArchitecture processorArchitecture) {
+        if (natives == null || !natives.containsKey(operatingSystem)) {
+            return null;
+        }
+
+        Map<ProcessorArchitecture, RemoteFile[]> processorArchitectureFiles = natives.get(operatingSystem);
+
+        if (processorArchitectureFiles == null) {
+            return null;
+        }
+
+        return processorArchitectureFiles.get(processorArchitecture);
+    }
+
     public URL getUrl() {
         String remoteJarPath = "https://repo1.maven.org/maven2/%s/%s/%s/%s-%s.jar".formatted(
             groupId.replace('.', '/'),
@@ -69,9 +93,12 @@ public class MavenArtifact implements DownloadableEntity, StorableEntity {
         }
     }
 
-    @Override
-    public Path getRelativePath() {
-        return Path.of(groupId, artifactId + "-" + version + ".jar");
+    public String getFileName() {
+        return "%s-%s.jar".formatted(artifactId, version);
+    }
+
+    public String getFullName() {
+        return "%s/%s/%s".formatted(groupId, artifactId, version);
     }
 
     @Override

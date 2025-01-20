@@ -3,11 +3,21 @@ package ru.mrrex.betterium;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 
 import ru.mrrex.betterium.entities.MavenArtifact;
+import ru.mrrex.betterium.entities.RemoteFile;
+import ru.mrrex.betterium.entities.client.ClientConfig;
+import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
+import ru.mrrex.betterium.utils.environment.Environment;
+import ru.mrrex.betterium.utils.environment.OperatingSystem;
+import ru.mrrex.betterium.utils.environment.ProcessorArchitecture;
+import ru.mrrex.betterium.utils.environment.SystemImcompatibilityException;
 import ru.mrrex.betterium.utils.hash.Hash;
 import ru.mrrex.betterium.utils.hash.HashAlgorithm;
+import ru.mrrex.betterium.utils.network.FileDownloader;
+import ru.mrrex.betterium.utils.network.RetryLimitExceededException;
 
 public class WorkingDirectory {
 
@@ -54,32 +64,35 @@ public class WorkingDirectory {
         return path;
     }
 
-    public Path getDependenciesDirectoryPath() {
-        return dependenciesDirectoryPath;
+    public Path getDependencyPath(MavenArtifact mavenArtifact) {
+        String relativePath = "libraries/%s/%s/%s/%s".formatted(
+            mavenArtifact.getGroupId(),
+            mavenArtifact.getArtifactId(),
+            mavenArtifact.getVersion(),
+            mavenArtifact.getFileName()
+        );
+
+        return dependenciesDirectoryPath.resolve(relativePath);
     }
 
-    public Path getMavenArtifactPath(MavenArtifact mavenArtifact) {
-        Path mavenArtifactPath = dependenciesDirectoryPath.resolve(mavenArtifact.getRelativePath());
+    public Path getDependencyNativeFilePath(MavenArtifact mavenArtifact, RemoteFile nativeFile) {
+        String relativePath = "natives/%s/%s/%s/%s".formatted(
+            mavenArtifact.getGroupId(),
+            mavenArtifact.getArtifactId(),
+            mavenArtifact.getVersion(),
+            nativeFile.getFileName()
+        );
 
-        if (!Files.exists(mavenArtifactPath) || !Files.isRegularFile(mavenArtifactPath)) {
-            return null;
-        }
-
-        return mavenArtifactPath;
+        return dependenciesDirectoryPath.resolve(relativePath);
     }
 
-    public boolean hasMavenArtifact(MavenArtifact mavenArtifact) {
-        Path mavenArtifactPath = getMavenArtifactPath(mavenArtifact);
+    public Path getClientComponentPath(String clientUniqueId, RemoteFile clientComponent) {
+        String relativePath = "components/%s/%s".formatted(
+            clientUniqueId,
+            clientComponent.getFileName()
+        );
 
-        if (mavenArtifactPath == null) {
-            return false;
-        }
-
-        try {
-            return Hash.isChecksumValid(mavenArtifactPath, HashAlgorithm.SHA256, mavenArtifact.getChecksum());
-        } catch (IOException | NoSuchAlgorithmException exception) {
-            return false;
-        }
+        return dependenciesDirectoryPath.resolve(relativePath);
     }
 
     @Override

@@ -1,10 +1,11 @@
 package ru.mrrex.betterium.entities;
 
 import java.net.URL;
+import java.nio.file.Paths;
 
 import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
 
-public class JarComponent implements DownloadableEntity {
+public class RemoteFile implements DownloadableEntity {
 
     private URL url;
     private String checksum;
@@ -25,8 +26,12 @@ public class JarComponent implements DownloadableEntity {
         this.checksum = checksum;
     }
 
+    public String getFileName() {
+        return Paths.get(url.getPath()).getFileName().toString();
+    }
+
     @Override
     public String toString() {
-        return "JarComponent [url=\"%s\"]".formatted(url);
+        return "RemoteFile [url=\"%s\"]".formatted(url);
     }
 }

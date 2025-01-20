@@ -1,4 +1,4 @@
-package ru.mrrex.betterium.entities;
+package ru.mrrex.betterium.entities.client;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -6,11 +6,13 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ru.mrrex.betterium.entities.MavenArtifact;
+import ru.mrrex.betterium.entities.RemoteFile;
 import ru.mrrex.betterium.entities.interfaces.UniqueEntity;
 import ru.mrrex.betterium.utils.hash.Hash;
 import ru.mrrex.betterium.utils.hash.HashAlgorithm;
 
-public class ClientInstance implements UniqueEntity {
+public class ClientConfig implements UniqueEntity {
 
     private String name;
     private String version;
@@ -18,7 +20,7 @@ public class ClientInstance implements UniqueEntity {
     @JsonIgnore
     private String uniqueId;
 
-    private JarComponent[] components;
+    private RemoteFile[] components;
     private MavenArtifact[] dependencies;
 
     @JsonProperty("jvm_arguments")
@@ -40,11 +42,11 @@ public class ClientInstance implements UniqueEntity {
         this.version = version;
     }
 
-    public void setComponents(JarComponent[] components) {
+    public void setComponents(RemoteFile[] components) {
         this.components = components;
     }
 
-    public JarComponent[] getComponents() {
+    public RemoteFile[] getComponents() {
         return components;
     }
 
@@ -64,7 +66,6 @@ public class ClientInstance implements UniqueEntity {
         this.jvmArguments = jvmArguments;
     }
 
-    @Override
     public String getUniqueId() {
         if (uniqueId != null) {
             return uniqueId;
@@ -81,7 +82,7 @@ public class ClientInstance implements UniqueEntity {
 
     @Override
     public String toString() {
-        return "ClientInstance [name=\"%s\", version=\"%s\", uid=\"%s\"]".formatted(
+        return "ClientConfig [name=\"%s\", version=\"%s\", uid=\"%s\"]".formatted(
             name, version, getUniqueId()
         );
     }

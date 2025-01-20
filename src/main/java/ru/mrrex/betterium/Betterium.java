@@ -9,8 +9,12 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ru.mrrex.betterium.entities.ClientInstance;
-import ru.mrrex.betterium.utils.Environment;
+import ru.mrrex.betterium.entities.FileDownloadQueue;
+import ru.mrrex.betterium.entities.client.Client;
+import ru.mrrex.betterium.entities.client.ClientBuildException;
+import ru.mrrex.betterium.entities.client.ClientBuilder;
+import ru.mrrex.betterium.entities.client.ClientConfig;
+import ru.mrrex.betterium.utils.environment.Environment;
 
 public class Betterium {
 
@@ -18,20 +22,30 @@ public class Betterium {
 
     private final WorkingDirectory workingDirectory;
     private final ObjectMapper objectMapper;
+    private final ClientBuilder clientBuilder;
 
     public Betterium(Path workingDirectoryPath) {
         workingDirectory = new WorkingDirectory(workingDirectoryPath);
         objectMapper = new ObjectMapper();
+        clientBuilder = new ClientBuilder(this);
     }
 
     public Betterium() {
         this(Environment.getApplicationDirectoryPath().resolve(DEFAULT_WORKING_DIRECTORY_NAME));
     }
 
-    public ClientInstance createClientInstance(Path clientInstanceConfigPath) throws StreamReadException, DatabindException, IOException {
-        try (InputStream inputStream = Files.newInputStream(clientInstanceConfigPath)) {
-            return objectMapper.readValue(inputStream, ClientInstance.class);
+    public FileDownloadQueue createFileDownloadQueue() {
+        return new FileDownloadQueue(workingDirectory);
+    }
+
+    public ClientConfig loadClientConfig(Path clientConfigPath) throws StreamReadException, DatabindException, IOException {
+        try (InputStream inputStream = Files.newInputStream(clientConfigPath)) {
+            return objectMapper.readValue(inputStream, ClientConfig.class);
         }
+    }
+
+    public Client createClient(ClientConfig clientConfig) throws ClientBuildException {
+        return clientBuilder.build(clientConfig);
     }
 
     @Override

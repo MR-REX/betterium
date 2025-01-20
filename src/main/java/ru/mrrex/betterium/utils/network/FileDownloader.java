@@ -1,4 +1,4 @@
-package ru.mrrex.betterium.utils;
+package ru.mrrex.betterium.utils.network;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,7 +8,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-import ru.mrrex.betterium.exceptions.RetryLimitExceededException;
+import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
 
 public class FileDownloader {
 
@@ -28,14 +28,20 @@ public class FileDownloader {
         }
     }
 
-    public static void downloadFileWithRetries(URL url, File file, int maxRetries) throws RetryLimitExceededException {
+    public static void downloadFileWithRetries(URL url, File file, int maxRetries) throws IOException, RetryLimitExceededException {
         for (int retry = 0; retry < maxRetries; retry++) {
             try {
                 downloadFile(url, file);
             } catch (IOException exception) {
                 if (retry == maxRetries - 1)
                     throw new RetryLimitExceededException("Failed to download file", exception);
+
+                throw exception;
             }
         }
+    }
+
+    public static void downloadFileWithRetries(URL url, File file) throws IOException, RetryLimitExceededException {
+        downloadFileWithRetries(url, file, MAX_RETRIES);
     }
 }

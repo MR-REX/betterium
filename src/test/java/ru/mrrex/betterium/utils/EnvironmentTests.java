@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.util.function.Supplier;
 import org.junit.jupiter.api.Test;
 
+import ru.mrrex.betterium.utils.environment.Environment;
+
 public class EnvironmentTests {
     
     private static <T> T useSystemProperty(String key, String value, Supplier<T> supplier) {

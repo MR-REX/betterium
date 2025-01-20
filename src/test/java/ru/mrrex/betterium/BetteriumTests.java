@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import ru.mrrex.betterium.utils.Environment;
+import ru.mrrex.betterium.utils.environment.Environment;
 
 public class BetteriumTests {
 
