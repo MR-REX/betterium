@@ -8,8 +8,6 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
-
 public class FileDownloader {
 
     public static final int MAX_RETRIES = 3;
