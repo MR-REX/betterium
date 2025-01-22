@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ru.mrrex.betterium.entities.FileDownloadQueue;
+import ru.mrrex.betterium.directories.WorkingDirectory;
 import ru.mrrex.betterium.entities.client.Client;
 import ru.mrrex.betterium.entities.client.ClientBuildException;
 import ru.mrrex.betterium.entities.client.ClientBuilder;
@@ -27,15 +27,11 @@ public class Betterium {
     public Betterium(Path workingDirectoryPath) {
         workingDirectory = new WorkingDirectory(workingDirectoryPath);
         objectMapper = new ObjectMapper();
-        clientBuilder = new ClientBuilder(this);
+        clientBuilder = new ClientBuilder(workingDirectory);
     }
 
     public Betterium() {
         this(Environment.getApplicationDirectoryPath().resolve(DEFAULT_WORKING_DIRECTORY_NAME));
-    }
-
-    public FileDownloadQueue createFileDownloadQueue() {
-        return new FileDownloadQueue(workingDirectory);
     }
 
     public ClientConfig loadClientConfig(Path clientConfigPath) throws StreamReadException, DatabindException, IOException {

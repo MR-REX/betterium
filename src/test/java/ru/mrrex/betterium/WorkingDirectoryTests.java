@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ru.mrrex.betterium.directories.WorkingDirectory;
+
 public class WorkingDirectoryTests {
 
     @Test

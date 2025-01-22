@@ -1,14 +1,24 @@
 package ru.mrrex.betterium.entities;
 
 import java.net.URL;
-import java.nio.file.Paths;
+import java.nio.file.Path;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
 
 public class RemoteFile implements DownloadableEntity {
 
+    @JsonProperty(required = true)
     private URL url;
+
     private String checksum;
+
+    @JsonProperty("filename")
+    private String fileName = null;
+
+    @JsonProperty("global")
+    private boolean global = false;
 
     public URL getUrl() {
         return url;
@@ -26,8 +36,21 @@ public class RemoteFile implements DownloadableEntity {
         this.checksum = checksum;
     }
 
+    @JsonProperty("global")
+    public boolean isGlobal() {
+        return global;
+    }
+
+    public void setGlobal(boolean isGlobal) {
+        this.global = isGlobal;
+    }
+
     public String getFileName() {
-        return Paths.get(url.getPath()).getFileName().toString();
+        if (fileName != null && !fileName.isEmpty()) {
+            return fileName;
+        }
+
+        return Path.of(url.getPath()).getFileName().toString();
     }
 
     @Override

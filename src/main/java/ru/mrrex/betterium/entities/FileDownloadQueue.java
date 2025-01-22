@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-import ru.mrrex.betterium.WorkingDirectory;
+import ru.mrrex.betterium.directories.WorkingDirectory;
 import ru.mrrex.betterium.entities.interfaces.DownloadableEntity;
 import ru.mrrex.betterium.utils.environment.Environment;
 import ru.mrrex.betterium.utils.environment.OperatingSystem;

@@ -8,15 +8,17 @@ import java.util.concurrent.Executors;
 
 public class ParallelTasksExecutor {
 
+    private final int threadsCount;
     private final ExecutorService threadPool;
 
     public ParallelTasksExecutor(int threadsCount) {
-        threadPool = Executors.newFixedThreadPool(threadsCount);
+        this.threadsCount = threadsCount;
+        this.threadPool = Executors.newFixedThreadPool(threadsCount);
     }
 
     public ParallelTasksExecutor() {
-        int availableThreadsCount = Runtime.getRuntime().availableProcessors();
-        threadPool = Executors.newFixedThreadPool(availableThreadsCount);
+        this.threadsCount = Runtime.getRuntime().availableProcessors();
+        this.threadPool = Executors.newFixedThreadPool(this.threadsCount);
     }
 
     public boolean run(List<Callable<Void>> tasks) throws ExecutionException {
@@ -41,5 +43,10 @@ public class ParallelTasksExecutor {
         }
 
         return isAllTasksCompleted;
+    }
+
+    @Override
+    public String toString() {
+        return "ParallelTasksExecutor [threads=%d]".formatted(threadsCount);
     }
 }
