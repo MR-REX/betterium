@@ -18,6 +18,10 @@ public class UserDataDirectory {
         this.screenshotsDirectoryPath = DirectoryManager.defineDirectory(path.resolve("screenshots"));
     }
 
+    public Path getPath() {
+        return path;
+    }
+
     public Path getTexturepacksDirectoryPath() {
         return texturepacksDirectoryPath;
     }

@@ -1,10 +1,8 @@
 package ru.mrrex.betterium.entities.client;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ru.mrrex.betterium.entities.MavenArtifact;
 import ru.mrrex.betterium.entities.RemoteFile;
@@ -23,8 +21,7 @@ public class ClientConfig implements UniqueEntity {
     private RemoteFile[] components;
     private MavenArtifact[] dependencies;
 
-    @JsonProperty("jvm_arguments")
-    private Map<String, Object> jvmArguments;
+    private ClientOptions options;
 
     public String getName() {
         return name;
@@ -58,12 +55,16 @@ public class ClientConfig implements UniqueEntity {
         this.dependencies = dependencies;
     }
 
-    public Map<String, Object> getJvmArguments() {
-        return jvmArguments;
+    public ClientOptions getOptions() {
+        return options;
     }
 
-    public void setJvmArguments(Map<String, Object> jvmArguments) {
-        this.jvmArguments = jvmArguments;
+    public void setOptions(ClientOptions options) {
+        this.options = options;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     public String getUniqueId() {

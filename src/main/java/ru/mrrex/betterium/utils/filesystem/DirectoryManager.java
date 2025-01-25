@@ -1,24 +1,71 @@
 package ru.mrrex.betterium.utils.filesystem;
 
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class DirectoryManager {
 
-    public static void copyDirectory(Path sourceDirectoryPath, Path destinationDirectoryPath, CopyOption... copyOptions) throws IOException {
-        Files.walk(sourceDirectoryPath).forEach(sourcePath -> {
-            String relativePath = sourcePath.toString().substring(sourceDirectoryPath.toString().length());
-            Path destinationPath = destinationDirectoryPath.resolve(relativePath);
+    public static void moveDirectory(Path fromDirectoryPath, Path toDirectoryPath) throws IOException {
+        if (!Files.exists(toDirectoryPath)) {
+            Files.createDirectories(toDirectoryPath);
+        }
 
-            try {
-                Files.copy(sourcePath, destinationPath, copyOptions);
-            } catch (IOException exception) {
-                throw new RuntimeException("Failed to copy object", exception);
+        Files.walkFileTree(fromDirectoryPath, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path sourceFilePath, BasicFileAttributes attrs) throws IOException {
+                Path targetFilePath = toDirectoryPath.resolve(fromDirectoryPath.relativize(sourceFilePath));
+                Files.move(sourceFilePath, targetFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult preVisitDirectory(Path sourceDirectoryPath, BasicFileAttributes attrs) throws IOException {
+                Path targetDirectoryPath = toDirectoryPath.resolve(fromDirectoryPath.relativize(sourceDirectoryPath));
+
+                if (!Files.exists(targetDirectoryPath)) {
+                    Files.createDirectories(targetDirectoryPath);
+                }
+
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path sourceDirectoryPath, IOException exc) throws IOException {
+                Files.delete(sourceDirectoryPath);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
+
+    public static void copyDirectory(Path fromDirectoryPath, Path toDirectoryPath) throws IOException {
+        if (!Files.exists(toDirectoryPath)) {
+            Files.createDirectories(toDirectoryPath);
+        }
+
+        Files.walkFileTree(fromDirectoryPath, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path sourceFilePath, BasicFileAttributes attrs) throws IOException {
+                Path targetFilePath = toDirectoryPath.resolve(fromDirectoryPath.relativize(sourceFilePath));
+                Files.copy(sourceFilePath, targetFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult preVisitDirectory(Path sourceDirectoryPath, BasicFileAttributes attrs) throws IOException {
+                Path targetDirectoryPath = toDirectoryPath.resolve(fromDirectoryPath.relativize(sourceDirectoryPath));
+
+                if (!Files.exists(targetDirectoryPath)) {
+                    Files.createDirectories(targetDirectoryPath);
+                }
+
+                return FileVisitResult.CONTINUE;
             }
         });
     }

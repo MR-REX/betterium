@@ -26,6 +26,10 @@ public class ClientDirectory {
         this.dataDirectoryPath = DirectoryManager.defineDirectory(path.resolve("data"));
     }
 
+    public Path getPath() {
+        return path;
+    }
+
     private void createHardLink(Path directoryPath, Path filePath) throws IOException {
         String fileName = filePath.getFileName().toString();
         Path hardLinkPath = directoryPath.resolve(fileName);

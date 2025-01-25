@@ -8,7 +8,6 @@ import java.util.WeakHashMap;
 
 import ru.mrrex.betterium.entities.MavenArtifact;
 import ru.mrrex.betterium.entities.RemoteFile;
-import ru.mrrex.betterium.entities.client.ClientConfig;
 import ru.mrrex.betterium.utils.filesystem.DirectoryManager;
 
 public class WorkingDirectory {
@@ -72,6 +71,11 @@ public class WorkingDirectory {
 
     public Path getClientDirectoryPath(String clientId) {
         return instancesDirectoryPath.resolve(clientId);
+    }
+
+    public boolean hasClientDirectory(String clientId) {
+        Path clientDirectoryPath = getClientDirectoryPath(clientId);
+        return Files.exists(clientDirectoryPath) && Files.isDirectory(clientDirectoryPath);
     }
 
     public ClientDirectory getClientDirectory(String clientId) {

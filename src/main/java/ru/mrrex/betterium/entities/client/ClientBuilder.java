@@ -91,7 +91,7 @@ public class ClientBuilder {
             downloadRequiredFiles(clientConfig);
             ClientDirectory clientDirectory = getOrCreateClientDirectory(clientConfig);
 
-            return new Client(clientConfig, clientDirectory);
+            return new Client(workingDirectory, clientConfig, clientDirectory);
         } catch (Exception exception) {
             throw new ClientBuildException("Failed to build client instance", exception);
         }

@@ -1,21 +1,20 @@
 package ru.mrrex.betterium.runtime;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.mrrex.betterium.entities.client.Client;
 import ru.mrrex.betterium.utils.environment.Environment;
 import ru.mrrex.betterium.utils.environment.OperatingSystem;
 
 public class JavaRuntime {
 
     private final Path javaFilePath;
+    private final JvmArguments jvmArguments;
 
-    public JavaRuntime(Path javaDirectoryPath) {
+    public JavaRuntime(Path javaDirectoryPath, JvmArguments jvmArguments) {
         if (javaDirectoryPath == null) {
             throw new IllegalArgumentException("JavaRuntime instance must reference the java directory");
         }
@@ -28,37 +27,35 @@ public class JavaRuntime {
         }
 
         this.javaFilePath = filePath;
+        this.jvmArguments = jvmArguments;
+    }
+
+    public JavaRuntime(JvmArguments jvmArguments) {
+        this(
+            Path.of(System.getProperty("java.home", ".")),
+            jvmArguments    
+        );
     }
 
     public JavaRuntime() {
-        this(Path.of(System.getProperty("java.home", ".")));
+        this(null);
     }
 
-    private int run(List<String> command) throws IOException, InterruptedException {
-        command.add(0, javaFilePath.toString());
+    public int run(List<String> arguments) throws IOException, InterruptedException {
+        List<String> command = new ArrayList<>();
+
+        command.add("\"%s\"".formatted(javaFilePath));
+
+        if (jvmArguments != null) {
+            command.addAll(jvmArguments.getValidArguments());
+        }
+
+        command.addAll(arguments);
 
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         processBuilder.inheritIO();
 
         return processBuilder.start().waitFor();
-    }
-
-    public int run(Client client) throws IOException, InterruptedException {
-        List<String> command = new ArrayList<>();
-
-        Path nativesDirectoryPath = client.getNativesDirectoryPath();
-        command.add("-Djava.library.path=\"%s\"".formatted(nativesDirectoryPath));
-
-        command.add("-cp");
-
-        Path librariesDirectoryPath = client.getLibrariesDirectoryPath();
-        Path clientJarFilePath = client.getClientJarFilePath();
-        command.add("\"%s%s*%s%s\"".formatted(librariesDirectoryPath, File.pathSeparator, File.pathSeparatorChar, clientJarFilePath));
-
-        command.add("net.minecraft.client.Minecraft");
-        command.add("Meow");
-
-        return run(command);
     }
 
     @Override

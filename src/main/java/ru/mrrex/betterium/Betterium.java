@@ -34,6 +34,10 @@ public class Betterium {
         this(Environment.getApplicationDirectoryPath().resolve(DEFAULT_WORKING_DIRECTORY_NAME));
     }
 
+    public Path getWorkingDirectoryPath() {
+        return workingDirectory.getPath();
+    }
+
     public ClientConfig loadClientConfig(Path clientConfigPath) throws StreamReadException, DatabindException, IOException {
         try (InputStream inputStream = Files.newInputStream(clientConfigPath)) {
             return objectMapper.readValue(inputStream, ClientConfig.class);
