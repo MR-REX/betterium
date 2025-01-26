@@ -74,8 +74,10 @@ public class GameDirectory {
         }
 
         DirectoryManager.copyDirectory(client.getDataDirectoryPath(), path);
-        DirectoryManager.copyDirectory(userDataDirectory.getScreenshotsDirectoryPath(), path.resolve("screenshots"));
-        DirectoryManager.copyDirectory(userDataDirectory.getTexturepacksDirectoryPath(), path.resolve("texturepacks"));
+
+        for (Path internalDirectoryPath : userDataDirectory.getInternalDirectoriesPaths()) {
+            DirectoryManager.copyDirectory(internalDirectoryPath, path.resolve(internalDirectoryPath.getFileName()));
+        }
 
         Path restoreFilePath = path.resolve(RestoreFile.FILENAME);
         restoreFile.write(restoreFilePath);
@@ -104,8 +106,10 @@ public class GameDirectory {
 
         Files.deleteIfExists(restoreFilePath);
 
-        DirectoryManager.moveDirectory(path.resolve("screenshots"), userDataDirectory.getScreenshotsDirectoryPath());
-        DirectoryManager.moveDirectory(path.resolve("texturepacks"), userDataDirectory.getTexturepacksDirectoryPath());
+        for (Path internalDirectoryPath : userDataDirectory.getInternalDirectoriesPaths()) {
+            DirectoryManager.moveDirectory(path.resolve(internalDirectoryPath.getFileName()), internalDirectoryPath);
+        }
+
         DirectoryManager.moveDirectory(path, client.getDataDirectoryPath());
 
         if (Files.exists(path) && Files.isDirectory(path)) {
