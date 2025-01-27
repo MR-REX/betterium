@@ -1,6 +1,7 @@
 package ru.mrrex.betterium.utils.environment;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Environment {
 
@@ -50,12 +51,12 @@ public class Environment {
             String appData = System.getenv("APPDATA");
 
             if (appData != null)
-                return Path.of(appData);
+                return Paths.get(appData);
         }
 
         if (operatingSystem == OperatingSystem.MACOSX)
-            return Path.of(homeDirectory, "Library/Application Support");
+            return Paths.get(homeDirectory, "Library/Application Support");
 
-        return Path.of(homeDirectory);
+        return Paths.get(homeDirectory);
     }
 }

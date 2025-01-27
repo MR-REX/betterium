@@ -68,8 +68,11 @@ public class FileDownloadQueue {
 
         if (nativeFiles == null) {
             throw new SystemImcompatibilityException(
-                    "\"%s\" dependency requires native libraries that are not available for this system"
-                            .formatted(mavenArtifact.getFullName()));
+                String.format(
+                    "\"%s\" dependency requires native libraries that are not available for this system",
+                    mavenArtifact.getFullName()
+                )
+            );
         }
 
         for (RemoteFile nativeFile : nativeFiles) {
@@ -102,6 +105,6 @@ public class FileDownloadQueue {
 
     @Override
     public String toString() {
-        return "FileDownloadQueue [tasks=%d]".formatted(tasks.size());
+        return String.format("FileDownloadQueue [tasks=%d]", tasks.size());
     }
 }

@@ -3,6 +3,7 @@ package ru.mrrex.betterium.runtime;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class JavaRuntime {
         Path filePath = javaDirectoryPath.resolve("bin/" + fileName);
 
         if (!Files.exists(filePath) && !Files.isDirectory(filePath)) {
-            throw new IllegalArgumentException("The specified path does not contain \"%s\" file".formatted(fileName));
+            throw new IllegalArgumentException(String.format("The specified path does not contain \"%s\" file", fileName));
         }
 
         this.javaFilePath = filePath;
@@ -32,7 +33,7 @@ public class JavaRuntime {
 
     public JavaRuntime(JvmArguments jvmArguments) {
         this(
-            Path.of(System.getProperty("java.home", ".")),
+            Paths.get(System.getProperty("java.home", ".")),
             jvmArguments    
         );
     }
@@ -44,7 +45,7 @@ public class JavaRuntime {
     public int run(List<String> arguments) throws IOException, InterruptedException {
         List<String> command = new ArrayList<>();
 
-        command.add("\"%s\"".formatted(javaFilePath));
+        command.add(String.format("\"%s\"", javaFilePath));
 
         if (jvmArguments != null) {
             command.addAll(jvmArguments.getValidArguments());
@@ -60,6 +61,6 @@ public class JavaRuntime {
 
     @Override
     public String toString() {
-        return "JavaRuntime [path=\"%s\"]".formatted(javaFilePath);
+        return String.format("JavaRuntime [path=\"%s\"]", javaFilePath);
     }
 }

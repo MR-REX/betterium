@@ -83,7 +83,8 @@ public class ClientConfig implements UniqueEntity {
 
     @Override
     public String toString() {
-        return "ClientConfig [name=\"%s\", version=\"%s\", uid=\"%s\"]".formatted(
+        return String.format(
+            "ClientConfig [name=\"%s\", version=\"%s\", uid=\"%s\"]",
             name, version, getUniqueId()
         );
     }

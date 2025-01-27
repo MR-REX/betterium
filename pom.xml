@@ -6,16 +6,15 @@
 
   <groupId>ru.mrrex</groupId>
   <artifactId>betterium</artifactId>
-  <version>0.0</version>
+  <version>1.0.0</version>
 
   <name>betterium</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://github.com/MR-REX/betterium</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>

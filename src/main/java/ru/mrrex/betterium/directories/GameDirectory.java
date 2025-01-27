@@ -13,41 +13,36 @@ import ru.mrrex.betterium.utils.filesystem.DirectoryManager;
 
 public class GameDirectory {
 
-    private class RestoreFile {
+    private static class RestoreFile {
         private static final String FILENAME = ".betterium";
 
-        private String getFileContent() {
-            return client.getUniqueId();
+        private static String getFileContent(GameDirectory gameDirectory) {
+            return gameDirectory.client.getUniqueId();
         }
 
-        private void write(Path filePath) throws IOException {
-            Files.writeString(filePath, getFileContent(), StandardCharsets.UTF_8);
+        private static void write(GameDirectory gameDirectory, Path filePath) throws IOException {
+            byte[] bytes = getFileContent(gameDirectory).getBytes(StandardCharsets.UTF_8);
+            Files.write(filePath, bytes);
         }
 
         private static String read(Path filePath) throws IOException {
-            return Files.readString(filePath, StandardCharsets.UTF_8);
+            byte[] bytes = Files.readAllBytes(filePath);
+            return new String(bytes, StandardCharsets.UTF_8);
         }
 
-        private boolean equals(Path filePath) throws IOException {
-            return read(filePath).equals(getFileContent());
-        }
-
-        @Override
-        public String toString() {
-            return "RestoreFile [client_id=\"%s\"]".formatted(client.getUniqueId());
+        private static boolean equals(GameDirectory gameDirectory, Path filePath) throws IOException {
+            return read(filePath).equals(getFileContent(gameDirectory));
         }
     }
 
     private final Client client;
     private final UserDataDirectory userDataDirectory;
-    private final RestoreFile restoreFile;
 
     private Path path;
 
     public GameDirectory(Client client, UserDataDirectory userDataDirectory, Path directoryPath) {
         this.client = client;
         this.userDataDirectory = userDataDirectory;
-        this.restoreFile = new RestoreFile();
 
         this.path = directoryPath;
     }
@@ -80,7 +75,7 @@ public class GameDirectory {
         }
 
         Path restoreFilePath = path.resolve(RestoreFile.FILENAME);
-        restoreFile.write(restoreFilePath);
+        RestoreFile.write(this, restoreFilePath);
 
         this.path = path;
     }
@@ -100,7 +95,7 @@ public class GameDirectory {
             throw new FileNotFoundException("Couldn't find the restore file");
         }
 
-        if (!restoreFile.equals(restoreFilePath)) {
+        if (!RestoreFile.equals(this, restoreFilePath)) {
             throw new IOException("Recovery file content do not match the current configuration");
         }
 
@@ -121,7 +116,7 @@ public class GameDirectory {
 
     @Override
     public String toString() {
-        return "GameDirectory [client_id=\"%s\", mounted=%s]".formatted(client.getUniqueId(), isMounted());
+        return String.format("GameDirectory [client_id=\"%s\", mounted=%s]", client.getUniqueId(), isMounted());
     }
 
     public static GameDirectory restoreFromDirectory(WorkingDirectory workingDirectory, Path directoryPath) throws IOException {

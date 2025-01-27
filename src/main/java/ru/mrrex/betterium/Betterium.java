@@ -50,6 +50,6 @@ public class Betterium {
 
     @Override
     public String toString() {
-        return "Betterium [path=\"%s\"]".formatted(workingDirectory.getPath());
+        return String.format("Betterium [path=\"%s\"]", workingDirectory.getPath());
     }
 }

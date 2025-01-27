@@ -44,7 +44,7 @@ public class JarFile {
 
     @Override
     public String toString() {
-        return "JarFile [entries=%d]".formatted(entries.size());
+        return String.format("JarFile [entries=%d]", entries.size());
     }
 
     public static JarFile fromFile(File file) throws FileNotFoundException, IOException {

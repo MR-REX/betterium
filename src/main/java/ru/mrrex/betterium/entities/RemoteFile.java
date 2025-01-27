@@ -1,7 +1,7 @@
 package ru.mrrex.betterium.entities;
 
 import java.net.URL;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -50,11 +50,11 @@ public class RemoteFile implements DownloadableEntity {
             return fileName;
         }
 
-        return Path.of(url.getPath()).getFileName().toString();
+        return Paths.get(url.getPath()).getFileName().toString();
     }
 
     @Override
     public String toString() {
-        return "RemoteFile [url=\"%s\"]".formatted(url);
+        return String.format("RemoteFile [url=\"%s\"]", url);
     }
 }

@@ -35,7 +35,8 @@ public class WorkingDirectory {
     }
 
     public Path getDependencyPath(MavenArtifact mavenArtifact) {
-        String relativePath = "libraries/%s/%s/%s/%s".formatted(
+        String relativePath = String.format(
+            "libraries/%s/%s/%s/%s",
             mavenArtifact.getGroupId(),
             mavenArtifact.getArtifactId(),
             mavenArtifact.getVersion(),
@@ -46,7 +47,8 @@ public class WorkingDirectory {
     }
 
     public Path getDependencyNativeFilePath(MavenArtifact mavenArtifact, RemoteFile nativeFile) {
-        String relativePath = "natives/%s/%s/%s/%s".formatted(
+        String relativePath = String.format(
+            "natives/%s/%s/%s/%s",
             mavenArtifact.getGroupId(),
             mavenArtifact.getArtifactId(),
             mavenArtifact.getVersion(),
@@ -57,7 +59,8 @@ public class WorkingDirectory {
     }
 
     public Path getClientComponentPath(String clientUniqueId, RemoteFile clientComponent) {
-        String relativePath = "components/%s/%s".formatted(
+        String relativePath = String.format(
+            "components/%s/%s",
             clientComponent.isGlobal() ? "global" : clientUniqueId,
             clientComponent.getFileName()
         );
@@ -118,6 +121,6 @@ public class WorkingDirectory {
 
     @Override
     public String toString() {
-        return "WorkingDirectory [path=\"%s\"]".formatted(path);
+        return String.format("WorkingDirectory [path=\"%s\"]", path);
     }
 }

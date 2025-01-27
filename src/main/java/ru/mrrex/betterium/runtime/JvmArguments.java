@@ -26,6 +26,6 @@ public class JvmArguments {
 
     @Override
     public String toString() {
-        return "JvmArguments [count=%d]".formatted(arguments.size());
+        return String.format("JvmArguments [count=%d]", arguments.size());
     }
 }

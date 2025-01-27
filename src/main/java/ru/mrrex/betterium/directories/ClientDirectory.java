@@ -104,6 +104,6 @@ public class ClientDirectory {
 
     @Override
     public String toString() {
-        return "ClientDirectory [path=\"%s\"]".formatted(path);
+        return String.format("ClientDirectory [path=\"%s\"]", path);
     }
 }

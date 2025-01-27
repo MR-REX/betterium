@@ -34,6 +34,6 @@ public class UserDataDirectory {
 
     @Override
     public String toString() {
-        return "UserDataDirectory [path=\"%s\"]".formatted(path);
+        return String.format("UserDataDirectory [path=\"%s\"]", path);
     }
 }

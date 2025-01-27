@@ -47,6 +47,6 @@ public class ParallelTasksExecutor {
 
     @Override
     public String toString() {
-        return "ParallelTasksExecutor [threads=%d]".formatted(threadsCount);
+        return String.format("ParallelTasksExecutor [threads=%d]", threadsCount);
     }
 }

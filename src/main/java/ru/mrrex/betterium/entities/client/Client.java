@@ -58,13 +58,22 @@ public class Client implements UniqueEntity {
         List<String> arguments = new ArrayList<>();
 
         Path nativesDirectoryPath = clientDirectory.getNativesDirectoryPath();
-        arguments.add("-Djava.library.path=\"%s\"".formatted(nativesDirectoryPath));
+        arguments.add(String.format("-Djava.library.path=\"%s\"", nativesDirectoryPath));
 
         arguments.add("-cp");
 
         Path librariesDirectoryPath = clientDirectory.getLibrariesDirectoryPath();
         Path clientJarFilePath = clientDirectory.getClientJarFilePath();
-        arguments.add("\"%s%s*%s%s\"".formatted(librariesDirectoryPath, File.separator, File.pathSeparator, clientJarFilePath));
+
+        arguments.add(
+            String.format(
+                "\"%s%s*%s%s\"",
+                librariesDirectoryPath,
+                File.separator,
+                File.pathSeparator,
+                clientJarFilePath
+            )
+        );
 
         arguments.add("net.minecraft.client.Minecraft");
 
@@ -82,7 +91,8 @@ public class Client implements UniqueEntity {
 
     @Override
     public String toString() {
-        return "Client [name=\"%s\", version=\"%s\", uid=\"%s\"]".formatted(
+        return String.format(
+            "Client [name=\"%s\", version=\"%s\", uid=\"%s\"]",
             clientConfig.getName(), clientConfig.getVersion(), getUniqueId()
         );
     }

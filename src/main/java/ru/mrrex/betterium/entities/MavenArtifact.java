@@ -78,7 +78,8 @@ public class MavenArtifact implements DownloadableEntity {
     }
 
     public URL getUrl() {
-        String remoteJarPath = "https://repo1.maven.org/maven2/%s/%s/%s/%s-%s.jar".formatted(
+        String remoteJarPath = String.format(
+            "https://repo1.maven.org/maven2/%s/%s/%s/%s-%s.jar",
             groupId.replace('.', '/'),
             artifactId,
             version,
@@ -94,16 +95,17 @@ public class MavenArtifact implements DownloadableEntity {
     }
 
     public String getFileName() {
-        return "%s-%s.jar".formatted(artifactId, version);
+        return String.format("%s-%s.jar", artifactId, version);
     }
 
     public String getFullName() {
-        return "%s/%s/%s".formatted(groupId, artifactId, version);
+        return String.format("%s/%s/%s", groupId, artifactId, version);
     }
 
     @Override
     public String toString() {
-        return "MavenArtifact [groupId=\"%s\", artifactId=\"%s\", version=\"%s\"]".formatted(
+        return String.format(
+            "MavenArtifact [groupId=\"%s\", artifactId=\"%s\", version=\"%s\"]",
             groupId, artifactId, version
         );
     }

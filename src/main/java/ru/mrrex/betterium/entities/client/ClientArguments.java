@@ -2,8 +2,10 @@ package ru.mrrex.betterium.entities.client;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import ru.mrrex.betterium.utils.environment.Environment;
 
@@ -15,7 +17,7 @@ public class ClientArguments {
     private Path gameDirectoryPath;
 
     public ClientArguments() {
-        playerNickname = "Player%d".formatted(System.currentTimeMillis() % 1000L);
+        playerNickname = "Player" + (System.currentTimeMillis() % 1000L);
         playerUuid = UUID.nameUUIDFromBytes(playerNickname.getBytes(StandardCharsets.UTF_8));
 
         gameDirectoryPath = Environment.getApplicationDirectoryPath().resolve(".minecraft-bta");
@@ -47,13 +49,13 @@ public class ClientArguments {
 
     public List<String> getArguments(String[] argumentsTemplate) {
         String uuid = playerUuid.toString();
-        String gameDirectory = "\"%s\"".formatted(gameDirectoryPath);
+        String gameDirectory = String.format("\"%s\"", gameDirectoryPath);
 
-        return List.of(argumentsTemplate).stream().map(argument -> {
+        return Arrays.stream(argumentsTemplate).map(argument -> {
             return argument.replace("%player_nickname%", playerNickname)
                            .replace("%player_uuid%", uuid)
                            .replace("%game_directory%", gameDirectory);
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     @Override

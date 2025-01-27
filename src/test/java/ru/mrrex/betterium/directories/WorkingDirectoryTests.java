@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
@@ -47,7 +48,7 @@ public class WorkingDirectoryTests {
         mavenArtifact.setChecksum("N/A");
         mavenArtifact.setNatives(new HashMap<>());
 
-        Path expectedDependencyDirectoryPath = Path.of(
+        Path expectedDependencyDirectoryPath = Paths.get(
             temporaryDirectoryPath.toString(),
             "dependencies/libraries",
             mavenArtifact.getGroupId(),
@@ -59,7 +60,7 @@ public class WorkingDirectoryTests {
         RemoteFile nativeFile = new RemoteFile();
         nativeFile.setUrl(new URL("http://localhost/native.dll"));
 
-        Path expectedNativesDirectoryPath = Path.of(
+        Path expectedNativesDirectoryPath = Paths.get(
             temporaryDirectoryPath.toString(),
             "dependencies/natives",
             mavenArtifact.getGroupId(),
