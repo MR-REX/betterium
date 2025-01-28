@@ -83,7 +83,7 @@ public class Client implements UniqueEntity {
         GameDirectory gameDirectory = new GameDirectory(this, workingDirectory.getUserDataDirectory());
         gameDirectory.mount(gameDirectoryPath);
 
-        int exitCode = javaRuntime.run(arguments);
+        int exitCode = javaRuntime.run(gameDirectoryPath, arguments);
         gameDirectory.unmount();
 
         return exitCode;

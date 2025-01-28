@@ -1,5 +1,6 @@
 package ru.mrrex.betterium.runtime;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,7 +43,11 @@ public class JavaRuntime {
         this(null);
     }
 
-    public int run(List<String> arguments) throws IOException, InterruptedException {
+    public int run(Path directoryPath, List<String> arguments) throws IOException, InterruptedException {
+        if (!Files.exists(directoryPath) || ! Files.isDirectory(directoryPath)) {
+            throw new FileNotFoundException(String.format("Specified working directory \"%s\" for JavaRuntime does not exist", directoryPath));
+        }
+
         List<String> command = new ArrayList<>();
 
         command.add(String.format("\"%s\"", javaFilePath));
@@ -54,6 +59,7 @@ public class JavaRuntime {
         command.addAll(arguments);
 
         ProcessBuilder processBuilder = new ProcessBuilder(command);
+        processBuilder.directory(directoryPath.toFile());
         processBuilder.inheritIO();
 
         return processBuilder.start().waitFor();
