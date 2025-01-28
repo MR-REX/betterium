@@ -1,25 +1,25 @@
 # Betterium
 
-Betterium is a powerful Java library designed to streamline the creation and management of clients for the "Better Than Adventure" game modification.
+Betterium is a powerful Java library designed to streamline the creation and management of clients for the "Better Than Adventure!" game modification.
 Whether you are building a custom launcher or need a reliable way to handle multiple client versions, Betterium provides a robust and flexible solution.
 
 ## Features
 
-- **Client Generation from JSON Configuration**:
+- **Client generation from JSON Configuration**:
     - Define your client setup using a JSON configuration file that specifies:
         - Libraries (e.g. `LWJGL`).
         - Native files (e.g. `.dll`, `.so` files for different platforms).
         - JAR files (e.g. game client JAR and modification JAR).
 
-- **Automatic Dependency Management**:
+- **Automatic dependency management**:
     - Dependencies are automatically downloaded from Maven repository or retrieved from a local cache.
     - Ensures your client always has the required files without manual intervention.
 
-- **Client Directory Handling**:
+- **Client directory handling**:
     - Generates a dedicated client directory for temporary files such as resource packs, translations, and screenshots.
     - Automatically cleans up and restores files to their original locations after the client is closed.
 
-- **Easy Client Launching**:
+- **Easy client launching**:
     - Handles the entire process, from preparing dependencies to starting the client.
 
 ## Getting Started
@@ -30,7 +30,7 @@ Whether you are building a custom launcher or need a reliable way to handle mult
 
 ### Usage
 
-1. **Create a JSON Configuration File.** Define your client setup in a JSON file.
+1. **Create a JSON Configuration file.** Define your client setup in a JSON file.
 
 2. **Initialize Client instance.** Use Betterium to load dependencies, create the
 client, and launch it.
