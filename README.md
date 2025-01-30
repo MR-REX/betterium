@@ -24,13 +24,78 @@ Whether you are building a custom launcher or need a reliable way to handle mult
 
 ## Getting Started
 
-### Prerequisites
+### Dependencies
 
-1. Java 8 or higher.
+> [!NOTE]
+> Requires Java 8 or higher.
+
+|Group ID|Artifact ID|Version|
+|--------|-----------|-------|
+|com.fasterxml.jackson.core|jackson-core|2.18.2|
+|com.fasterxml.jackson.core|jackson-annotations|2.18.2|
+|com.fasterxml.jackson.core|jackson-databind|2.18.2|
 
 ### Usage
 
 1. **Create a JSON Configuration file.** Define your client setup in a JSON file.
+
+```json
+{
+    "name": "A Simple Client Configuration",
+    "version": "v7.3",
+    "components": [
+        {
+            "global": true,
+            "filename": "filename.jar",
+            "url": "...",
+            "checksum": "..."
+        },
+        {
+            "url": "...",
+            "checksum": "..."
+        },
+        ...
+    ],
+    "dependencies": [
+        {
+            "group_id": "org.lwjgl",
+            "artifact_id": "lwjgl",
+            "version": "3.3.6",
+            "checksum": "b00e2781b74cc829db9d39fb68746b25bb7b94ce61d46293457dbccddabd999c",
+            "natives": {
+                "windows": {
+                    "x64": [
+                        {
+                            "url": "https://.../lwjgl.dll",
+                            "checksum": "c3fcb077b3bc4fe83effe1d5cb9cd1dfa62196087a03ea1c1023b9fc174e10da"
+                        }
+                    ]
+                }
+            }
+        },
+        ...
+    ],
+    "options": {
+        "jvm_arguments": [
+            "-XX:+UseG1GC",
+            "-XX:+UnlockExperimentalVMOptions",
+            "-XX:G1NewSizePercent=20",
+            "-XX:G1ReservePercent=20",
+            "-XX:MaxGCPauseMillis=50",
+            "-XX:G1HeapRegionSize=32M",
+            "-Dsun.rmi.dgc.server.gcInterval=2147483646"
+        ],
+        "client_arguments": [
+            "--username",
+            "%player_nickname%",
+            "--uuid",
+            "%player_uuid%",
+            "--gameDir",
+            "%game_directory%"
+        ]
+    }
+}
+```
 
 2. **Initialize Client instance.** Use Betterium to load dependencies, create the
 client, and launch it.
