@@ -53,8 +53,7 @@ Whether you are building a custom launcher or need a reliable way to handle mult
         {
             "url": "...",
             "checksum": "..."
-        },
-        ...
+        }
     ],
     "dependencies": [
         {
@@ -72,8 +71,7 @@ Whether you are building a custom launcher or need a reliable way to handle mult
                     ]
                 }
             }
-        },
-        ...
+        }
     ],
     "options": {
         "jvm_arguments": [
